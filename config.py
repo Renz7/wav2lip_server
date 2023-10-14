@@ -5,7 +5,11 @@
 Time    : 2023/10/11 17:24
 Author  : ren
 """
-from pydantic_settings import BaseSettings
+from pydantic_settings import BaseSettings as DanticBaseSettings, SettingsConfigDict
+
+
+class BaseSettings(DanticBaseSettings):
+    model_config = SettingsConfigDict(_case_sensitive=False, env_file=".env", extra="ignore")
 
 
 class WeixinConfig(BaseSettings):
@@ -30,3 +34,5 @@ class CeleryConfig(BaseSettings):
 
 
 celery_config = CeleryConfig()
+
+print(celery_config, config)
