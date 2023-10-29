@@ -1,0 +1,43 @@
+services:
+  backend:
+    image: renz7/sd-backend
+    container_name: sd-backend
+    env_file:
+      - .env
+    ports:
+      - 8000:8000
+    volumes:
+      - ./output/:/home/runner/output/
+    depends_on:
+      - init-db
+      - redis
+  redis:
+    image: redis
+    ports:
+      - 6380:6379
+  mysql:
+    image: mysql
+    ports:
+      - 33061:3306
+    environment:
+      MYSQL_DATABASE: wav2lip
+      MYSQL_ROOT_PASSWORD: 1233
+  init-db:
+    image: renz7/sd-backend
+    env_file:
+      - .env
+    command:
+      - initdb
+    depends_on:
+      - mysql
+  celery:
+    image: renz7/sd-backend
+    container_name: celery-worker
+    volumes:
+      - ./output/:/runner/output/
+    env_file:
+      - .env
+    command:
+      - celery
+    depends_on:
+      - redis
