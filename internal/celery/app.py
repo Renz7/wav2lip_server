@@ -12,12 +12,16 @@ from config import celery_config
 
 
 def get_celery():
-    return celery.Celery(
+    from ext.webui_client import webui_client  # noqa, init webui
+
+    app = celery.Celery(
         "wav2lip",
         backend=celery_config.broker,
         broker=celery_config.backend,
-        include=["internal.celery.tasks"]
+        include=["internal.celery.tasks"],
+        broker_connection_retry_on_startup=True
     )
+    return app
 
 
 celery_app = get_celery()

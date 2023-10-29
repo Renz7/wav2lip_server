@@ -9,7 +9,7 @@ from pydantic_settings import BaseSettings as DanticBaseSettings, SettingsConfig
 
 
 class BaseSettings(DanticBaseSettings):
-    model_config = SettingsConfigDict(_case_sensitive=False, env_file=".env", extra="ignore")
+    model_config = SettingsConfigDict(case_sensitive=False, env_file=".env", extra="ignore")
 
 
 class WeixinConfig(BaseSettings):
@@ -17,15 +17,22 @@ class WeixinConfig(BaseSettings):
     app_secret: str = "xxx"
 
 
+class OSSConfig(BaseSettings):
+    access_key_id: str
+    access_key_secret: str
+    endpoint: str
+    bucket: str
+    url_prefix: str
+
+
 class Config(BaseSettings):
+    debug: bool = False
     db_url: str = "mysql+pymysql://root:1233@localhost/wav2lip"
+
     weixin: WeixinConfig = WeixinConfig()
     secret_key: str = "xxx"
 
-    oss_base: str = "http://"
-
-
-config = Config()
+    wav2lip_fn_index: int = 314
 
 
 class CeleryConfig(BaseSettings):
@@ -33,6 +40,13 @@ class CeleryConfig(BaseSettings):
     backend: str = "redis://localhost/0"
 
 
-celery_config = CeleryConfig()
+class WebuiConfig(BaseSettings):
+    webui_url: str = "http://127.0.0.1:7860/"
+    webui_output_dir: str = "./output"
 
-print(celery_config, config)
+
+config = Config()
+celery_config = CeleryConfig()
+oss_config = OSSConfig()
+
+webui_config = WebuiConfig()

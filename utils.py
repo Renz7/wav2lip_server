@@ -5,23 +5,25 @@
 Time    : 2023/10/13 23:52
 Author  : ren
 """
-from urllib import parse
+import urllib.parse
+import uuid
 
-from fastapi import File,UploadFile
-
-from config import config
-
-
-def parse_oss_url(url):
-    """
-    parse full oss path
-    :param url: base path in db
-    :return:
-    """
-    return parse.urljoin(config.oss_base, url)
+from config import oss_config
 
 
-async def upload_oss(file: UploadFile, path) -> str:
-    # todo 上传文件返回地址
-    file.filename
-    return ""
+def gen_oss_path(suffix="mp4"):
+    """生产oss文件路径"""
+    suffix = suffix if suffix.startswith(".") else "." + suffix
+    return f"sd-files/{uuid.uuid4().hex}{suffix}"
+
+
+def get_file_suffix(fname: str):
+    sp = fname.split(".")
+    if len(sp) <= 1:
+        return None
+    else:
+        return sp[-1]
+
+
+def get_oss_url(fp):
+    return urllib.parse.urljoin(oss_config.url_prefix, fp)

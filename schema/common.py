@@ -8,6 +8,7 @@ Author  : ren
 
 import typing
 
+from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel
 
@@ -28,7 +29,7 @@ class DataResponse(BaseModel):
 
 
 def res_ok(data=None):
-    return DataResponse(data=data)
+    return DataResponse(data=jsonable_encoder(data))
 
 
 def res_err(code, err, status_code=500):

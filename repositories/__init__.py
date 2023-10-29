@@ -13,12 +13,21 @@ from internal.db.database import Base
 
 
 class BaseRepository:
+    __clz__: typing.Type[Base] = None
+
     def __init__(self, db):
         self.db: Session = db
-        self.model_clz: typing.Type[Base] = self.get_model_clz()
-
-    def get_model_clz(self) -> typing.Type[Base]:
-        return object.__class__
 
     async def get_by_id(self, _id: int) -> Base:
-        return self.db.query(self.model_clz).get(_id)
+        return self.db.query(self.__clz__).get(_id)
+
+    async def create(self, instance: Base):
+        with self.db as db:
+            db.add(instance)
+            db.commit()
+        return instance
+
+    async def update_by_id(self, id: int, update_state):
+        with self.db as db:
+            db.query(self.__clz__).filter(self.__clz__.id == id).update(update_state)
+            db.commit()

@@ -8,6 +8,7 @@ Author  : ren
 import enum
 
 from sqlalchemy import Column, Integer, String, DateTime, Boolean, func, Enum
+from sqlalchemy.orm import DeclarativeBase
 
 from internal.db.database import Base
 
@@ -37,9 +38,9 @@ class Project(DateMixin, Base):
     id = Column(Integer, primary_key=True)
     wx_id = Column(String(32), index=True, comment="wx openid")
     deleted = Column(Boolean, default=False, comment="是否删除")
-    result_oss = Column(String(64), comment="oss 存储地址")
-    origin_video_oss = Column(String(64), comment="原始视频存储地址")
-    voice_oss = Column(String(64), comment="音频文件地址")
+    result_oss = Column(String(512), comment="oss 存储地址")
+    origin_video_oss = Column(String(512), comment="原始视频存储地址")
+    voice_oss = Column(String(512), comment="音频文件地址")
 
     # task
     task_id = Column(String(64), comment="celery task id")
