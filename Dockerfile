@@ -1,4 +1,4 @@
-FROM sd-backend-dep
+FROM renz7/sd-backend-dep
 
 WORKDIR /ruuner
 COPY . /ruuner
