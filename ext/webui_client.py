@@ -10,8 +10,11 @@ from gradio_client import Client
 
 from config import webui_config as config
 
-webui_client: Client = Client(
-    src=config.webui_url,
-    max_workers=8, output_dir=config.webui_output_dir,
-    serialize=True
-)
+webui_client: Client = None
+
+if config.enable:
+    webui_client = Client(
+        src=config.webui_url,
+        max_workers=8, output_dir=config.webui_output_dir,
+        serialize=True
+    )

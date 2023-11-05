@@ -41,6 +41,7 @@ class CeleryConfig(BaseSettings):
 
 
 class WebuiConfig(BaseSettings):
+    enable: bool = False
     webui_url: str = "http://127.0.0.1:7860/"
     webui_output_dir: str = "./output"
 

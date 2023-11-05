@@ -9,11 +9,22 @@ import typing
 
 
 class InternalException(Exception):
+    code: int
+    err: typing.Any
+    status: int
 
     def __init__(self, code: int = -1, err: typing.Any = None, status_code=500):
         self.code = code
         self.err = err
         self.status = status_code
+
+
+def make_exception_clz(name: str, code: int, **kwargs):
+    return type(name, (InternalException, Exception), {
+        "code": code,
+        "status": 200
+        , **kwargs
+    })
 
 
 # 10xx data error
@@ -32,3 +43,13 @@ class InvalidParam(InternalException):
 class OSSError(InternalException):
     def __init__(self, msg="error during oss operating"):
         super().__init__(1201, msg)
+
+
+class SubProcessError(InternalException):
+    code = 1202
+
+    def __init__(self, err: str):
+        super().__init__(self.code, err, status_code=500)
+
+
+ExecutableNotFound = make_exception_clz("ExecutableNotFound", code=1203, err="executable file not found")

@@ -61,6 +61,8 @@ class BaseTask(celery.Task):
                 project.result_oss = einfo.msg
                 db.commit()
 
+    # def on_message(self):
+
 
 @celery_app.task(name="gen_tts", base=BaseTask)
 def tts(req: TTSTask):

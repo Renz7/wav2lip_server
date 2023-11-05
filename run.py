@@ -10,8 +10,6 @@ import click
 import uvicorn
 from click_default_group import DefaultGroup
 
-from internal.celery.app import celery_app
-
 
 @click.group(cls=DefaultGroup, default='run', default_if_no_args=True)
 def cli():
@@ -36,6 +34,9 @@ def init_db(drop=False):
 @cli.command("celery")
 @click.option("--concurrency", "-c", default=4)
 def celery_cmd(concurrency: int):
+    from config import webui_config
+    webui_config.enable = True
+    from internal.celery.app import celery_app
     celery_app.worker_main(
         argv=[
             "worker",

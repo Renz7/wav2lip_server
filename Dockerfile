@@ -15,7 +15,7 @@ RUN sed -i "s/ports.ubuntu.com/${SOURCE_DIST}/g" /etc/apt/sources.list
 #RUN --mount=type=cache,target=/var/cache/apt \
 RUN apt update -y \
     && apt upgrade -y libc-bin \
-    && apt install -yqq --no-install-recommends rustc cargo python3-pip
+    && apt install -yqq --no-install-recommends rustc cargo python3-pip ffmpeg
 # non root user will cause permission problem
 RUN --mount=type=cache,target=/root/.cache/pip \
     pip install -r requirements.txt -i ${PIP_INDEX} -v

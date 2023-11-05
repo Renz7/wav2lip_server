@@ -12,7 +12,6 @@ from config import celery_config
 
 
 def get_celery():
-    from ext.webui_client import webui_client  # noqa, init webui
 
     app = celery.Celery(
         "wav2lip",

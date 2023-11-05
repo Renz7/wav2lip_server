@@ -87,9 +87,10 @@ async def get_project(pid: int, project_repo: ProjectRepository = Depends(get_re
 
 @router.get("/")
 async def get_user_project(
+        offset: int = 0, size=5,
         project_repo: ProjectRepository = Depends(get_repository(ProjectRepository)),
         wx_id=Depends(get_user)):
     if not wx_id:
         return res_err(0, "login required", 401)
-    projects = project_repo.db.query(Project).filter(Project.wx_id == wx_id).all()
+    projects = project_repo.db.query(Project).offset(offset).limit(5).filter(Project.wx_id == wx_id).all()
     return res_ok(data=projects)
