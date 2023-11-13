@@ -3,7 +3,7 @@
 .envrc
 
 ### dotenv template
-.env
+deploy/.env
 
 ### Python template
 # Byte-compiled / optimized / DLL files
@@ -128,7 +128,7 @@ celerybeat.pid
 *.sage.py
 
 # Environments
-.env
+deploy/.env
 .venv
 env/
 venv/

@@ -38,3 +38,28 @@ services:
       - celery
     depends_on:
       - redis
+  flower:
+    image: renz7/sd-backend
+    container_name: celery_flower
+    env_file:
+      - .env
+    entrypoint:
+      - celery
+      - --broker=${broker}
+      - flower
+      - --loglevel=info
+      - --url_prefix=flower
+  sd-webui:
+    image: renz7/sd-webui:1.0.1
+    container_name: sd-webui
+    env_file:
+      - .env
+    ports:
+      - "7860:7860"
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              capabilities: [ gpu ]
+              count: 1
