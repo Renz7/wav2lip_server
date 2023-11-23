@@ -6,7 +6,7 @@ from . import BaseRepository
 
 
 class DigitalTemplateRepo(BaseRepository):
-    __clz__= DigitalTemplate
+    __clz__ = DigitalTemplate
 
     def get_model_clz(self):
         return DigitalTemplate

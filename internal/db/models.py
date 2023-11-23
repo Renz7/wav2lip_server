@@ -52,4 +52,4 @@ class DigitalTemplate(DateMixin, Base):
 
     id = Column(Integer, primary_key=True)
     name = Column(String(32), comment="模板名称")
-    template_oss = Column(String(32), comment="数字人模板文件")
+    template_oss = Column(String(512), comment="数字人模板文件")
