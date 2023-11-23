@@ -90,3 +90,4 @@ def create_app(debug: bool) -> FastAPI:
 init_logger()
 
 app = create_app(config.debug)
+

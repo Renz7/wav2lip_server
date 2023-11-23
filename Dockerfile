@@ -7,4 +7,5 @@ RUN chmod 755 entrypoint.sh
 
 EXPOSE 8000
 VOLUME ./output/
+
 ENTRYPOINT ["./entrypoint.sh"]

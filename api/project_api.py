@@ -12,7 +12,7 @@ from loguru import logger
 from oss2 import Bucket
 
 import utils
-from dependence import get_repository, oss, get_user
+from dependence import get_repository, get_oss, get_user
 from exceptions import *
 from internal.celery.tasks import gen_wav2lip
 from internal.db.models import Project
@@ -25,17 +25,13 @@ from schema.common import res_ok
 router = APIRouter(prefix="/project")
 
 
-def submit_task():
-    pass
-
-
 @router.post("/create")
 async def create_project_api(video: UploadFile,
                              speech: UploadFile,
                              template_id: int = Form(),
                              repo: DigitalTemplateRepo = Depends(get_repository(DigitalTemplateRepo)),
                              project_repo: ProjectRepository = Depends(get_repository(ProjectRepository)),
-                             oss: Bucket = Depends(oss),
+                             oss: Bucket = Depends(get_oss),
                              user: str = Depends(get_user)):
     template = await repo.get_by_id(template_id)
     if not template:
@@ -87,10 +83,10 @@ async def get_project(pid: int, project_repo: ProjectRepository = Depends(get_re
 
 @router.get("/")
 async def get_user_project(
-        offset: int = 0, size=5,
+        offset: int = 0, size: int = 5,
         project_repo: ProjectRepository = Depends(get_repository(ProjectRepository)),
         wx_id=Depends(get_user)):
     if not wx_id:
         return res_err(0, "login required", 401)
-    projects = project_repo.db.query(Project).offset(offset).limit(5).filter(Project.wx_id == wx_id).all()
+    projects = project_repo.db.query(Project).filter(Project.wx_id == wx_id).offset(offset).limit(size).all()
     return res_ok(data=projects)

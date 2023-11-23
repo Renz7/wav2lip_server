@@ -25,7 +25,7 @@ import celery
 import pydantic
 from celery.exceptions import InvalidTaskError, TaskError
 from config import config
-from dependence import get_db, oss
+from dependence import get_db, get_oss
 from ext.webui_client import webui_client
 from internal.celery.app import celery_app
 from internal.db.models import Project, Status
@@ -99,6 +99,6 @@ def gen_wav2lip(self, task_req: Any) -> str:
         fp = ret[-1]
         logger.info(f"get generated output {type(fp)}:{fp}")
         key = utils.gen_oss_path()
-        oss().put_object_from_file(key, fp)
+        get_oss().put_object_from_file(key, fp)
         return utils.get_oss_url(key)
     raise TaskError("null generate result")

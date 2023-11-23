@@ -63,7 +63,7 @@ def init_bucket() -> Bucket:
     return bucket
 
 
-def oss():
+def get_oss():
     return init_bucket()
 
 
