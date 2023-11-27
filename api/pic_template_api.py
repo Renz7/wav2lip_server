@@ -30,7 +30,7 @@ async def get_pic(
         }
     )
 
-@router.get("/upload")
+@router.post("/upload")
 async def upload_pic(pic: UploadFile,
                      name: str = None,
                      oss: Bucket = Depends(get_oss),
