@@ -30,17 +30,17 @@ async def get_pic(
         }
     )
 
-    @router.get("/upload")
-    async def upload_pic(pic: UploadFile,
-                         name: str = None,
-                         oss: Bucket = Depends(get_oss),
-                         repo: BackedgroundPicRepo = Depends(get_repository(BackedgroundPicRepo))):
-        if len(pic.filename.split(".")) < 2:
-            raise Exception("file type error")
-        file_type = pic.filename.split(".")[-1]
-        path = utils.gen_oss_path(file_type)
-        oss.put_object(path, await pic.read())
-        backend = BackgroundPic()
-        backend.name = name
-        backend.background_oss = path
-        return repo.create(backend)
+@router.get("/upload")
+async def upload_pic(pic: UploadFile,
+                     name: str = None,
+                     oss: Bucket = Depends(get_oss),
+                     repo: BackedgroundPicRepo = Depends(get_repository(BackedgroundPicRepo))):
+    if len(pic.filename.split(".")) < 2:
+        raise Exception("file type error")
+    file_type = pic.filename.split(".")[-1]
+    path = utils.gen_oss_path(file_type)
+    oss.put_object(path, await pic.read())
+    backend = BackgroundPic()
+    backend.name = name
+    backend.background_oss = path
+    return repo.create(backend)
