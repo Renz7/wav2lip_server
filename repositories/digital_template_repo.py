@@ -11,7 +11,7 @@ class DigitalTemplateRepo(BaseRepository):
     def get_model_clz(self):
         return DigitalTemplate
 
-    async def get_templates(self, page, size=10):
+    def get_templates(self, page, size=10):
         offset = max((page - 1) * size, 0)
         result = self.db.query(DigitalTemplate).order_by(DigitalTemplate.updated_at.desc()).offset(offset).limit(
             size).all()
@@ -19,6 +19,6 @@ class DigitalTemplateRepo(BaseRepository):
 
         return list(map(Template.from_db, result))
 
-    async def create_template(self, template: DigitalTemplate):
+    def create_template(self, template: DigitalTemplate):
         self.db.add(template)
         self.db.commit()

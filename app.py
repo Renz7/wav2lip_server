@@ -13,7 +13,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.requests import Request
 
-from api import user_api, template_api, project_api, ffmpeg_api
+from api import user_api, template_api, project_api, ffmpeg_api, pic_template_api
 from config import config
 from exceptions import InternalException
 from schema.common import res_err
@@ -24,6 +24,7 @@ def register_router(app: FastAPI):
     app.include_router(template_api.router)
     app.include_router(project_api.router)
     app.include_router(ffmpeg_api.router)
+    app.include_router(pic_template_api.router)
 
 
 def setup_middlewares(app: FastAPI):
@@ -90,4 +91,3 @@ def create_app(debug: bool) -> FastAPI:
 init_logger()
 
 app = create_app(config.debug)
-

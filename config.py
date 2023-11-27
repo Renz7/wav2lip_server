@@ -46,8 +46,13 @@ class WebuiConfig(BaseSettings):
     webui_output_dir: str = "./output"
 
 
+class TTSConfig(BaseSettings):
+    tts_url: str = "http://locahost:5000/tts"
+
+
 config = Config()
 celery_config = CeleryConfig()
 oss_config = OSSConfig()
+tts_config = TTSConfig()
 
 webui_config = WebuiConfig()

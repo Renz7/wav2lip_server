@@ -21,7 +21,7 @@ router = APIRouter(prefix="/template")
 @router.get("/")
 async def get_templates(paginate: Paginate = Paginate.default(),
                         repo: DigitalTemplateRepo = Depends(get_repository(DigitalTemplateRepo))):
-    return await repo.get_templates(paginate.page, paginate.page_size)
+    return repo.get_templates(paginate.page, paginate.page_size)
 
 
 @router.post("/create")
@@ -37,5 +37,5 @@ async def upload_template(template_file: UploadFile,
 
     template.name = template_name,
     template.template_oss = oss_path
-    await repo.create_template(template)
+    repo.create_template(template)
     return template.id

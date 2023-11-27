@@ -11,8 +11,10 @@ import uuid
 from config import oss_config
 
 
-def gen_oss_path(suffix="mp4"):
-    """生产oss文件路径"""
+def gen_oss_path(suffix: object = "mp4") -> object:
+    """生产oss文件路径
+    :rtype: object
+    """
     suffix = suffix if suffix.startswith(".") else "." + suffix
     return f"sd-files/{uuid.uuid4().hex}{suffix}"
 

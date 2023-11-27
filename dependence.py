@@ -40,7 +40,7 @@ async def db_dep() -> Session:
         yield db
 
 
-def get_repository(repo_type: Type[BaseRepository]):
+def get_repository(repo_type: Type[BaseRepository]) -> object:
     def get_repo(db=Depends(db_dep)) -> BaseRepository:
         return repo_type(db)
 

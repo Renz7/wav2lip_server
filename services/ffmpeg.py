@@ -39,3 +39,9 @@ def ffmpeg_swap_background(video: str, pic: str, out: str = None) -> str:
         if p.returncode != 0:
             raise exceptions.SubProcessError(f"ffmpeg subprocess error with code:[{p.returncode}]")
         return output
+
+
+if __name__ == '__main__':
+    ffmpeg_swap_background("https://renz7.oss-cn-beijing.aliyuncs.com/sd-files/video/U1.mov",
+                           "/Users/ren/Downloads/54651.png",
+                           "./out.mp4")
