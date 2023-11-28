@@ -57,3 +57,4 @@ def wav2lip_task(
                 "task_status": Status.RUNNING
             }
         )
+        db.commit()
