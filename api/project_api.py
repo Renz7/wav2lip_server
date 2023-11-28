@@ -76,6 +76,7 @@ async def create_project_api(
     template = template_repo.get_by_id(template_id)
     if not template:
         raise RecordNotFound("template not found")
+    pic = None
     if background_id:
         pic = background_repo.get_by_id(background_id)
     if background_pic:

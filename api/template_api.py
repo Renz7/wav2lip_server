@@ -13,7 +13,7 @@ import utils
 from dependence import get_repository, get_oss
 from internal.db.models import DigitalTemplate
 from repositories.digital_template_repo import DigitalTemplateRepo
-from schema.common import Paginate
+from schema.common import Paginate, res_ok
 
 router = APIRouter(prefix="/template")
 
@@ -21,7 +21,8 @@ router = APIRouter(prefix="/template")
 @router.get("/")
 async def get_templates(paginate: Paginate = Paginate.default(),
                         repo: DigitalTemplateRepo = Depends(get_repository(DigitalTemplateRepo))):
-    return repo.get_templates(paginate.page, paginate.page_size)
+    data = repo.get_templates(paginate.page, paginate.page_size)
+    return res_ok(data)
 
 
 @router.post("/create")
@@ -38,4 +39,4 @@ async def upload_template(template_file: UploadFile,
     template.name = template_name,
     template.template_oss = oss_path
     repo.create_template(template)
-    return template.id
+    return res_ok(template)
