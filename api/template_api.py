@@ -27,16 +27,20 @@ async def get_templates(paginate: Paginate = Paginate.default(),
 
 @router.post("/create")
 async def upload_template(template_file: UploadFile,
+                          template_preview_pic: UploadFile,
                           template_name: str = Form(),
                           repo: DigitalTemplateRepo = Depends(get_repository(DigitalTemplateRepo)),
                           oss: Bucket = Depends(get_oss)):
     oss_path = utils.gen_oss_path(suffix="mp4")
-    url = utils.get_oss_url(oss_path)
     oss.put_object(oss_path,
                    await template_file.read())  # 可能存在性能问题
+    pic_path = utils.gen_oss_path(suffix=utils.get_file_suffix(template_preview_pic.filename))
+    oss.put_object(pic_path,
+                   await template_preview_pic.read())
     template = DigitalTemplate()
 
     template.name = template_name,
     template.template_oss = oss_path
+    template.preview_pic = pic_path
     repo.create_template(template)
     return res_ok(template)

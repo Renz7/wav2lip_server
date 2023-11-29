@@ -7,7 +7,7 @@ Author  : ren
 """
 import enum
 
-from sqlalchemy import Column, Integer, String, DateTime, Boolean, func, Enum, TEXT
+from sqlalchemy import Column, Integer, String, DateTime, Boolean, func, Enum, TEXT, BLOB
 
 from internal.db.database import Base
 
@@ -56,6 +56,7 @@ class DigitalTemplate(DateMixin, Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(32), comment="模板名称")
     template_oss = Column(String(512), comment="数字人模板文件")
+    preview_pic = Column( String(512), comment="数字人模板预览图")
 
 
 class BackgroundPic(DateMixin, Base):
