@@ -22,6 +22,8 @@ class User(DateMixin, Base):
 
     id = Column(Integer, primary_key=True)
     wx_id = Column(String(64), index=True)
+    avatar = Column(BLOB(), comment="头像")
+    nickname = Column(String(32), comment="昵称")
 
     voice_prompt_oss = Column(String(512), comment="语音提示oss地址", nullable=True)
 
@@ -56,7 +58,7 @@ class DigitalTemplate(DateMixin, Base):
     id = Column(Integer, primary_key=True)
     name = Column(String(32), comment="模板名称")
     template_oss = Column(String(512), comment="数字人模板文件")
-    preview_pic = Column( String(512), comment="数字人模板预览图")
+    preview_pic = Column(String(512), comment="数字人模板预览图")
 
 
 class BackgroundPic(DateMixin, Base):
