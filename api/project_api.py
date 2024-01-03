@@ -7,6 +7,8 @@ Author  : ren
 """
 from __future__ import annotations
 
+from typing import Optional
+
 from fastapi import APIRouter, UploadFile, Depends, Form
 from loguru import logger
 from oss2 import Bucket
@@ -94,7 +96,7 @@ async def create_project_api(
         pic = background_repo.create(db_model)
         logger.info(f"insert background pic {pic.id}")
     if not pic:
-        raise RecordNotFound("background pic not found")
+        logger.info("background pic not found")
     voice_oss = None
     if driven_mode == DRIVEN_MODE.TEXT and not speech_text:
         raise InvalidParam("speechText required")

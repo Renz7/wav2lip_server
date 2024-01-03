@@ -5,7 +5,6 @@
 Time    : 2023/11/26 14:39
 Author  : ren
 """
-import tempfile
 from datetime import datetime, timedelta
 
 from loguru import logger
@@ -35,16 +34,17 @@ def wav2lip_task(
     elif project.speech_text:
         voice_oss = tts(project.speech_text)
 
+    video = utils.get_oss_url(template.template_oss)
     if background_pic:
         pic = utils.get_oss_url(background_pic.background_oss)
-        video = utils.get_oss_url(template.template_oss)
         out = ffmpeg_swap_background(video, pic)
         get_oss().put_object_from_file(out.split("/")[-1], out)
+        video = utils.get_oss_url(out.split("/")[-1])
         logger.info("swap background success: {}", out)
 
     task_req = GenWav2LipRequest(
         speech=voice_oss,
-        video=utils.get_oss_url(template.template_oss),
+        video=video,
     )
     task = gen_wav2lip.apply_async(
         kwargs={"task_req": task_req.model_dump_json()},
