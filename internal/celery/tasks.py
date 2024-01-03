@@ -10,6 +10,7 @@ import sys
 from logging import Logger
 
 import gradio_client.serializing
+from billiard.einfo import ExceptionInfo
 
 import utils
 from patch import patch_gradio
@@ -58,7 +59,7 @@ class BaseTask(celery.Task):
                 return
             if einfo:
                 project.task_status = Status.FAILED
-                project.result_oss = einfo.msg
+                project.result_oss = einfo.traceback
                 db.commit()
 
     # def on_message(self):
@@ -89,6 +90,8 @@ def gen_wav2lip(self, task_req: Any) -> str:
             time.sleep(3)
         else:
             if job:
+                if not job.status().success:
+                    logger.error(f"task failed {job.exception(3)}")
                 logger.info(f"{job.status()}")
     except Exception as e:
         logger.exception(f"webui task error {e}")
