@@ -18,9 +18,10 @@ class BaseRepository:
     def __init__(self, db):
         self.db: Session = db
 
-    def page(self, page: int, size: int) -> object:
+    def page(self, page: int, size: int, **kwargs) -> object:
         count = self.db.query(self.__clz__).count()
-        return self.db.query(self.__clz__).order_by(self.__clz__.id).offset((page - 1) * size).limit(size).all(), count
+        return self.db.query(self.__clz__).filter_by(**kwargs).order_by(self.__clz__.id).offset((page - 1) * size).limit(
+            size).all(), count
 
     def get_by_id(self, _id: int) -> Base:
         return self.db.query(self.__clz__).get(_id)

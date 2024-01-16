@@ -68,3 +68,4 @@ class BackgroundPic(DateMixin, Base):
     name = Column(String(32), comment="背景名称")
     background_oss = Column(String(512), comment="背景文件")
     is_system = Column(Boolean, default=False, comment="是否是系统背景")
+    user_id = Column(Integer, comment="用户ID", nullable=True)

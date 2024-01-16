@@ -5,6 +5,8 @@
 Time    : 2023/11/26 13:41
 Author  : ren
 """
+from __future__ import annotations
+
 from fastapi import APIRouter, Depends, UploadFile
 from oss2 import Bucket
 
@@ -19,9 +21,18 @@ router = APIRouter(prefix="/pic")
 
 @router.get("/")
 async def get_pic(
-        page: int = 0, size: int = 10,
+        page: int = 0, size: int = 10, user_id: str | None = None,
         repo: BackedgroundPicRepo = Depends(get_repository(BackedgroundPicRepo))):
-    data, total = repo.page(page, size)
+    filters = {
+
+    }
+    if not user_id:
+        filters['is_system'] = 1
+    else:
+        filters['is_system'] = 0
+        filters['user_id'] = user_id
+
+    data, total = repo.page(page, size, **filters)
 
     return res_ok(
         {
@@ -29,6 +40,7 @@ async def get_pic(
             "total": total
         }
     )
+
 
 @router.post("/upload")
 async def upload_pic(pic: UploadFile,
