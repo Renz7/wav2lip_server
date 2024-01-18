@@ -41,6 +41,7 @@ class Project(DateMixin, Base):
     id = Column(Integer, primary_key=True)
     wx_id = Column(String(32), index=True, comment="wx openid")
     deleted = Column(Boolean, default=False, comment="是否删除")
+    name = Column(String(256), comment="项目名称", default="未命名项目")
 
     template_id = Column(Integer, comment="数字人模板id")
     background_id = Column(Integer, comment="背景id")
@@ -68,4 +69,4 @@ class BackgroundPic(DateMixin, Base):
     name = Column(String(32), comment="背景名称")
     background_oss = Column(String(512), comment="背景文件")
     is_system = Column(Boolean, default=False, comment="是否是系统背景")
-    user_id = Column(Integer, comment="用户ID", nullable=True)
+    wx_id = Column(String(256), comment="用户ID", nullable=True)

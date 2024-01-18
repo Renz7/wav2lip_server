@@ -7,8 +7,6 @@ Author  : ren
 """
 from __future__ import annotations
 
-from typing import Optional
-
 from fastapi import APIRouter, UploadFile, Depends, Form
 from loguru import logger
 from oss2 import Bucket
@@ -33,7 +31,7 @@ async def get_projects(status: int | None = None,
                        page: int = 1, size: int = 5,
                        project_repo: ProjectRepository = Depends(get_repository(ProjectRepository))):
     if not status:
-        projects, total = project_repo.page(page, size)
+        projects, total = project_repo.page(page, size, deleted=False)
     else:
         projects, total = await project_repo.page_by_status(status, page, size)
     return res_ok(data={
@@ -135,3 +133,17 @@ async def get_project(pid: int, project_repo: ProjectRepository = Depends(get_re
     if not project or project.wx_id != wx_id:
         raise RecordNotFound()
     return res_ok(project)
+
+
+@router.delete("/{pid}")
+async def delete_project(pid: int, repo: ProjectRepository = Depends(get_repository(ProjectRepository))):
+    return res_ok(repo.delete(pid))
+
+
+@router.post("/{pid}/update")
+async def update_project(pid: int,name:str,project_repo: ProjectRepository = Depends(get_repository(ProjectRepository))):
+    project = project_repo.get_by_id(pid)
+    if not project:
+        raise RecordNotFound()
+    project.name = name
+    return res_ok(project_repo.update(project))

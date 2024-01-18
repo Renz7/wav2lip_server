@@ -21,7 +21,22 @@ class ProjectRepository(BaseRepository):
         :param size:
         :return:
         """
-        query = self.db.query(self.__clz__).filter(Project.task_status == status)
+        query = self.db.query(self.__clz__).filter(Project.task_status == status, Project.deleted == False)
 
         return query.offset((page - 1) * size).limit(
             size).all(), query.count()
+
+    def delete(self, id):
+        """
+        删除项目
+        :param id:
+        :return:
+        """
+        self.db.query(self.__clz__).filter(Project.id == id).update({Project.deleted: True})
+        self.db.commit()
+
+    def update_name(self, id, name):
+        self.db.query(self.__clz__).filter(Project.id == id).update({
+            Project.name: name
+        })
+        self.db.commit()

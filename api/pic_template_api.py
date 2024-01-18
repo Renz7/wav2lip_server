@@ -23,9 +23,7 @@ router = APIRouter(prefix="/pic")
 async def get_pic(
         page: int = 0, size: int = 10, user_id: str | None = None,
         repo: BackedgroundPicRepo = Depends(get_repository(BackedgroundPicRepo))):
-    filters = {
-
-    }
+    filters = {}
     if not user_id:
         filters['is_system'] = 1
     else:
