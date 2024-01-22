@@ -21,9 +21,9 @@ class User(DateMixin, Base):
     __tablename__ = "user"
 
     id = Column(Integer, primary_key=True)
-    wx_id = Column(String(64), index=True)
+    wx_id = Column(String(128), index=True)
     avatar = Column(BLOB(), comment="头像")
-    nickname = Column(String(32), comment="昵称")
+    nickname = Column(String(128), comment="昵称")
 
     voice_prompt_oss = Column(String(512), comment="语音提示oss地址", nullable=True)
 
@@ -39,7 +39,7 @@ class Project(DateMixin, Base):
     __tablename__ = "project"
 
     id = Column(Integer, primary_key=True)
-    wx_id = Column(String(32), index=True, comment="wx openid")
+    wx_id = Column(String(128), index=True, comment="wx openid")
     deleted = Column(Boolean, default=False, comment="是否删除")
     name = Column(String(256), comment="项目名称", default="未命名项目")
 
@@ -57,7 +57,7 @@ class DigitalTemplate(DateMixin, Base):
     __tablename__ = "digital_template"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String(32), comment="模板名称")
+    name = Column(String(256), comment="模板名称")
     template_oss = Column(String(512), comment="数字人模板文件")
     preview_pic = Column(String(512), comment="数字人模板预览图")
 
@@ -66,7 +66,7 @@ class BackgroundPic(DateMixin, Base):
     __tablename__ = "background_pic"
 
     id = Column(Integer, primary_key=True)
-    name = Column(String(32), comment="背景名称")
+    name = Column(String(256), comment="背景名称")
     background_oss = Column(String(512), comment="背景文件")
     is_system = Column(Boolean, default=False, comment="是否是系统背景")
     wx_id = Column(String(256), comment="用户ID", nullable=True)
