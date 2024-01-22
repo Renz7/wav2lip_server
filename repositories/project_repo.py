@@ -40,3 +40,7 @@ class ProjectRepository(BaseRepository):
             Project.name: name
         })
         self.db.commit()
+
+    def update(self, project):
+        self.db.query(self.__clz__).filter(Project.id == project.id).update({Project.name: project.name})
+        self.db.commit()

@@ -141,7 +141,8 @@ async def delete_project(pid: int, repo: ProjectRepository = Depends(get_reposit
 
 
 @router.post("/{pid}/update")
-async def update_project(pid: int,name:str,project_repo: ProjectRepository = Depends(get_repository(ProjectRepository))):
+async def update_project(pid: int, name: str,
+                         project_repo: ProjectRepository = Depends(get_repository(ProjectRepository))):
     project = project_repo.get_by_id(pid)
     if not project:
         raise RecordNotFound()
